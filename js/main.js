@@ -1,4 +1,4 @@
-    let toDo = document.querySelector(".form");
+let toDo = document.querySelector(".form");
 let input = document.querySelector(".input");
 let list = document.querySelector(".list");
 let time = document.querySelector(".time");
@@ -10,7 +10,7 @@ let allToDoWrap = document.querySelector(".allToDo");
 let completedWrap = document.querySelector(".completed");
 let unCompletedWrap = document.querySelector(".unCompleted");
 
-
+// Real vaqt joylashtirish uchun
 function showTime() {
     let today = new Date();
     let h = today.getHours();
@@ -28,11 +28,13 @@ showTime()
 setInterval(showTime, 1000);
 
 let todos = [];
-
+// Input qiymatini massivga joylashtiladi
 toDo.addEventListener("submit", (e)=>{
     e.preventDefault();
 
     let notification = document.querySelector(".notification");
+
+    // Agar input qiymati bo'sh stringga teng bo'lmasligini tekshiradi va xabar yuboradi 
     if (input.value.trim() === "") {
         let notificationText = notification.querySelector("span");
         notificationText.textContent = "Please enter a task";
@@ -57,11 +59,11 @@ toDo.addEventListener("submit", (e)=>{
     input.value = ""
     renderToDo(todos)
 })
-
+// DOM ga ma'lumotlarni joylash
 function renderToDo(arr){
     list.innerHTML = "";
     list.classList.add("p-3");
-    
+    // Agar ma'lumot topilmasa ya'ni birorta ham to-do bo'lmasa 
     if (arr.length === 0) {
         list.innerHTML = `<li class="text-center text-lg">No todo.</li>`;
     } else {
@@ -96,8 +98,8 @@ function renderToDo(arr){
 }
 
 list.addEventListener("click", (e)=>{
+    // Todo ni o'chirish
     if(e.target.classList.contains("delete")){
-
         const liElement = e.target.closest('li');
         throwItem(liElement);
 
@@ -121,6 +123,7 @@ list.addEventListener("click", (e)=>{
 
 
     }
+    // Todo ni bajarilgan yoki bajarilmaganligi
     if (e.target.classList.contains("complete")){
         const id = e.target.closest(".complete-wrapper").dataset.id;
         const item = todos.find(item => item.id === parseInt(id));
@@ -128,7 +131,7 @@ list.addEventListener("click", (e)=>{
         renderToDo(todos);
 
     }
-
+    // Todo ni update ya'ni o'zgartirish
     if (e.target.classList.contains("update")) {
         const id = e.target.dataset.id;
         const item = todos.find(item => item.id === parseInt(id));
@@ -180,20 +183,22 @@ list.addEventListener("click", (e)=>{
         }
     }
 })
-
+// Xabar yuboradigan funksiya
 function throwItem(item){
     item.classList.add("throw")
 }
-
+// Barcha todo larni chiqaruvchi funksiya
 allToDoWrap.addEventListener("click", ()=>{
     renderToDo(todos)
 })
 
+// Bajarilgan todo larni chiqaruvchi funksiya
 completedWrap.addEventListener("click", ()=>{
     const completedToDos = todos.filter(item => item.isCompleted == true);
     renderToDo(completedToDos);
 })
 
+// Bajarilmagan todo larni chiqaruvchi funksiya
 unCompletedWrap.addEventListener("click", ()=>{
     const unCompletedToDos = todos.filter(item => item.isCompleted == false);
     renderToDo(unCompletedToDos)
