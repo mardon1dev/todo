@@ -27,7 +27,7 @@ function showTime() {
 showTime()
 setInterval(showTime, 1000);
 
-let todos = [];
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
 // Input qiymatini massivga joylashtiladi
 toDo.addEventListener("submit", (e)=>{
     e.preventDefault();
@@ -58,6 +58,7 @@ toDo.addEventListener("submit", (e)=>{
     todos.push(data);
     input.value = ""
     renderToDo(todos)
+    localStorage.setItem("todos", JSON.stringify(todos));
 })
 // DOM ga ma'lumotlarni joylash
 function renderToDo(arr){
@@ -94,8 +95,8 @@ function renderToDo(arr){
     allToDo.textContent = todos.length;
     unCompleted.textContent = todos.filter(item => !item.isCompleted).length;
     completed.textContent = todos.filter(item => item.isCompleted).length;
-
 }
+renderToDo(todos)
 
 list.addEventListener("click", (e)=>{
     // Todo ni o'chirish
@@ -119,6 +120,7 @@ list.addEventListener("click", (e)=>{
             const id = e.target.dataset.id
             todos = todos.filter(item => item.id !== parseInt(id));
             renderToDo(todos);
+            localStorage.setItem("todos", JSON.stringify(todos));
         }, 300);
 
 
@@ -129,6 +131,7 @@ list.addEventListener("click", (e)=>{
         const item = todos.find(item => item.id === parseInt(id));
         item.isCompleted = !item.isCompleted;
         renderToDo(todos);
+        localStorage.setItem("todos", JSON.stringify(todos));
 
     }
     // Todo ni update ya'ni o'zgartirish
